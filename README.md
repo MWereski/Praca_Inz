@@ -11,3 +11,4 @@ Camera reset button
 
 Small Guide in bottom left corner
 
+![alt text](https://github.com/MWereski/Praca_Inz/blob/master/a.png?raw=true)
