@@ -2,6 +2,7 @@
 Praca inżynierska
 
 GUI:
+
 On/Off camera rotation/zoom/moveXY
 
 Show current FPS
