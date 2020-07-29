@@ -2,7 +2,11 @@
 Praca inżynierska
 
 GUI:
-On/Off camera rotation/zoom/moveXY
+On/Off camera rotation/zoom/moveXY\n
+
 Show current FPS
+
 Camera reset button
+
 Small Guide in bottom left corner
+
