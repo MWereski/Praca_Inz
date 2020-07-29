@@ -1,4 +1,8 @@
 # Praca_Inz
 Praca inżynierska
 
-GUI w trakcie produkcji
+GUI:
+On/Off camera rotation/zoom/moveXY
+Show current FPS
+Camera reset button
+Small Guide in bottom left corner
