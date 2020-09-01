@@ -97,8 +97,12 @@ void draw() {
   mesh = createShape(GROUP);
   //strokeWeight(2);
   //pushMatrix();
-  stroke(255);
-  fill(255, 0, 0, 50);
+  
+  strokeWeight(1);
+  stroke(#23B5A1);
+  fill(#23B5A1, 150);
+  
+   lights();
 
   for (int y = rows/3; y < rows-rows/3; y++) {
       //beginShape(POINTS);

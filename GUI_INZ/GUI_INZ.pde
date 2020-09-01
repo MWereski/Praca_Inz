@@ -17,7 +17,8 @@ boolean camZoomToggle = true;
 void setup(){
 
   //Screen Size
-  size(1440, 900, P3D);
+  //size(1440, 900, P3D);
+  fullScreen(P3D);
   hint(DISABLE_OPENGL_ERRORS);
   hint(ENABLE_STROKE_PURE);
   //Camera 
