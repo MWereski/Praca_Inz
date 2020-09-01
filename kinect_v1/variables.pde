@@ -4,6 +4,7 @@ KinectPV2 kinect;
 //Camera object
 PeasyCam cam;
 
+
 //depth img from kinect
 PImage img;
 
@@ -25,3 +26,14 @@ int [] smoothData;
 int iterationsOfAvg = 4;
 
 ArrayList points;
+
+// GUI Object
+ControlP5 cp5;
+
+//Gui variables
+
+PFont font;
+
+boolean camMoveXYToggle = false;
+boolean camRotateToggle = true;
+boolean camZoomToggle = true;

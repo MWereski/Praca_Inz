@@ -1,12 +1,16 @@
+import controlP5.*;
+
 import peasy.*;
 import KinectPV2.KJoint;
 import KinectPV2.*;
 
 void setup() {
   //main settings
-  //fullScreen(P3D);
-  size(800, 600, P3D);
-  //smooth(8);
+  fullScreen(P3D);
+  hint(DISABLE_OPENGL_ERRORS);
+  hint(ENABLE_STROKE_PURE);
+  //size(800, 600, P3D);
+  smooth(8);
 
   //Camera settings
   cam = new PeasyCam(this, CameraParams.cx, CameraParams.cy, CameraParams.cz, CameraParams.doubleDist);
@@ -14,6 +18,27 @@ void setup() {
   cam.rotateX(CameraParams.k1);   
   cam.rotateY(CameraParams.k2); 
   cam.rotateZ(CameraParams.k3);
+  
+  cam.setCenterDragHandler(null);
+  cam.setResetOnDoubleClick(false);
+    
+  //Font
+  font = createFont("Trebuchet MS", 24);
+  
+  //GUI
+  cp5 = new ControlP5(this);
+  cp5.setFont(font);
+  cp5.setColorBackground(#4D4D4D);
+  cp5.setColorForeground(#34C6B2);
+  cp5.setColorValueLabel(#67F9E5);
+  
+  setSliders();
+  setLabelsText();
+  setToggles();
+  setButtons();
+  
+  cp5.setAutoDraw(false);
+
 
   //Kinect settings
 
@@ -32,6 +57,8 @@ void setup() {
 void draw() {
   //Background draw
   background(0);
+  
+  translate(0, 0, -1800);
   //scaling size of point cloud
   img = kinect.getPointCloudDepthImage();
 
@@ -155,6 +182,11 @@ void draw() {
  // popMatrix();
   
   prevRawData = smoothData;
+  
+     
+   cameraToggle();
+   
+   gui();
 
 
 }

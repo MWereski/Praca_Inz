@@ -4,7 +4,7 @@ static class CameraParams {
   static float cy = 256.64053f;
   static float cz = 0;
   
-  static float doubleDist = 2166.775560f;
+  static float doubleDist = 366.775560f;
   
   static float k1 = 0;
   static float k2 = 0;
