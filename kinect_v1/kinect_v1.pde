@@ -4,12 +4,16 @@ import KinectPV2.*;
 
 void setup() {
   //main settings
-  fullScreen(P3D);
-  //size(800, 600, P3D);
+  //fullScreen(P3D);
+  size(800, 600, P3D);
   //smooth(8);
 
   //Camera settings
-  cam = new PeasyCam(this, 0, 0, 0, 150);
+  cam = new PeasyCam(this, CameraParams.cx, CameraParams.cy, CameraParams.cz, CameraParams.doubleDist);
+  
+  cam.rotateX(CameraParams.k1);   
+  cam.rotateY(CameraParams.k2); 
+  cam.rotateZ(CameraParams.k3);
 
   //Kinect settings
 
@@ -149,7 +153,6 @@ void draw() {
   shape(mesh);
   
  // popMatrix();
-  println(frameRate);
   
   prevRawData = smoothData;
 
