@@ -39,7 +39,6 @@ void setup() {
   
   cp5.setAutoDraw(false);
 
-
   //Kinect settings
 
   kinect = new KinectPV2(this);
@@ -72,8 +71,8 @@ void draw() {
 
   newRawData = kinect.getRawDepthData();
   //reduce boiling points
-  for (int y = rows/3; y < rows-rows/3; y++) {
-    for (int x = int(cols/2.5f); x < int(cols-cols/2.5f); x++) {
+  for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY); y++) {
+    for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
       int offset = x + y * w;
       
       int newD = newRawData[offset];
@@ -104,17 +103,17 @@ void draw() {
   
   lights();
 
-  for (int y = rows/3; y < rows-rows/3; y++) {
+  for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY);  y++) {
       //beginShape(POINTS);
       //TRIANGLE_STRIP
-    for (int x = int(cols/2.5f); x < int(cols-cols/2.5f); x++) {
+    for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
       
       int offset = x*scl + y*scl * w;
       float d =smoothData[offset];
       d = map(d, 0, 4500, 2250, 0);
 
-      if(d > 2200) continue;
-      if(d < 1700) continue;
+      if(d > 1000*leftPointsZ) continue;
+      if(d < 1000*rightPointsZ) continue;
       
       PVector point1 = depthToPointCloudPos(x*scl, y*scl, d);
       
@@ -124,8 +123,8 @@ void draw() {
       float d2 =smoothData[offset2];
       d2 = map(d2, 0, 4500, 2250, 0);
 
-      if(d2 > 2200) continue;
-      if(d2 < 1700) continue;
+      if(d2 > 1000*leftPointsZ) continue;
+      if(d2 < 1000*rightPointsZ) continue;
       
       PVector point2 = depthToPointCloudPos(x*scl, (y+1)*scl, d2);
       
@@ -190,7 +189,7 @@ void draw() {
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
       vertex(p.x, p.y, p.z);
-    }
+  }
     
    endShape();
   }
@@ -199,11 +198,9 @@ void draw() {
  // popMatrix();
   
   prevRawData = smoothData;
-  
      
    cameraToggle();
    
    gui();
-
 
 }

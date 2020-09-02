@@ -18,6 +18,19 @@ float maxDistance = 10;
 int cols, rows;
 int scl = 1;
 
+float multiplier = 10f;
+
+float stepToChange = 1/multiplier;
+
+float leftPointsX = 2.5f;
+float rightPointsX = 2.5f;
+
+float leftPointsY = 3f;
+float rightPointsY = 3f;
+
+float leftPointsZ = 2.2f;
+float rightPointsZ = 1.7f;
+
 //smooth boiling points
 int [] newRawData;
 int [] prevRawData; 
