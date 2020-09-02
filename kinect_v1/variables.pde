@@ -37,3 +37,4 @@ PFont font;
 boolean camMoveXYToggle = false;
 boolean camRotateToggle = true;
 boolean camZoomToggle = true;
+boolean pointCloudToMesh = false;

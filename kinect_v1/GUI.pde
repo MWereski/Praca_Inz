@@ -7,32 +7,11 @@ void gui() {
   fill(#1A1A1A, 100);
   strokeWeight(1);
   rect(width - 300, 2, 299, 303);
+  rect(width - 300, 309, 299, 443);
   
   cp5.draw();
   cam.endHUD();
   hint(ENABLE_DEPTH_TEST);
-}
-
-void cameraToggle(){
-  if(camMoveXYToggle){
-    cam.setCenterDragHandler(cam.getPanDragHandler());
-  }else{
-    cam.setCenterDragHandler(null);
-  }
-  
-  if(camRotateToggle){
-    cam.setLeftDragHandler(cam.getRotateDragHandler());
-  }else{
-    cam.setLeftDragHandler(null);
-  }
-  
-  if(camZoomToggle){
-    cam.setRightDragHandler(cam.getZoomDragHandler());
-    cam.setWheelHandler(cam.getZoomWheelHandler());
-  }else{
-    cam.setRightDragHandler(null);
-    cam.setWheelHandler(null);
-  }
 }
 
 void setLabelsText(){
@@ -85,6 +64,13 @@ void setLabelsText(){
      .setPosition(width-180, 180)
      .setColorValue(#67F9E5)
      ;
+     
+  cp5.addTextlabel("pointCloudToMeshLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Turn on/off mesh")
+     .setPosition(width-200, 340)
+     .setColorValue(#67F9E5)
+     ;
 
 }
 
@@ -114,10 +100,6 @@ void setButtons(){
      .setSize(190, 30)
      .setPosition(width-210, 240)
      ;
-}
-
-public void resetCameraPosition() {
-  cam.reset();
 }
 
 void setToggles(){
@@ -155,6 +137,18 @@ void setToggles(){
      .setColorBackground(#2B2B2B) 
      .setSize(40,20)
      .setValue(true)
+     .setMode(ControlP5.SWITCH)
+     ;
+     
+   cp5.addToggle("pointCloudToMesh")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setCaptionLabel("On/Off") 
+     .setColorCaptionLabel(#67F9E5) 
+     .setPosition(width-60,340)
+     .setColorActive(#67F9E5) 
+     .setColorBackground(#2B2B2B) 
+     .setSize(40,20)
+     .setValue(false)
      .setMode(ControlP5.SWITCH)
      ;
   

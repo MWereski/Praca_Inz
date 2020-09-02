@@ -26,3 +26,29 @@ boolean dist(float a, float b, float maxDist){
   }
   return false;
 }
+
+public void resetCameraPosition() {
+  cam.reset();
+}
+
+void cameraToggle(){
+  if(camMoveXYToggle){
+    cam.setCenterDragHandler(cam.getPanDragHandler());
+  }else{
+    cam.setCenterDragHandler(null);
+  }
+  
+  if(camRotateToggle){
+    cam.setLeftDragHandler(cam.getRotateDragHandler());
+  }else{
+    cam.setLeftDragHandler(null);
+  }
+  
+  if(camZoomToggle){
+    cam.setRightDragHandler(cam.getZoomDragHandler());
+    cam.setWheelHandler(cam.getZoomWheelHandler());
+  }else{
+    cam.setRightDragHandler(null);
+    cam.setWheelHandler(null);
+  }
+}

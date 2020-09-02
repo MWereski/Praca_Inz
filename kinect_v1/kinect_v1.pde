@@ -102,7 +102,7 @@ void draw() {
   stroke(#23B5A1);
   fill(#23B5A1, 150);
   
-   lights();
+  lights();
 
   for (int y = rows/3; y < rows-rows/3; y++) {
       //beginShape(POINTS);
@@ -141,7 +141,8 @@ void draw() {
       //endShape();
   }
   
-      for(int p = 1; p < points.size()-2; p+=2){
+   if(pointCloudToMesh){
+        for(int p = 1; p < points.size()-2; p+=2){
        
        PVector p1 = (PVector)points.get(p-1);
        PVector p2 = (PVector)points.get(p);
@@ -178,10 +179,22 @@ void draw() {
       
       mesh.addChild(t);
 
-   } 
+     } 
+   }
  // pushMatrix();
-  
-  shape(mesh);
+  if(pointCloudToMesh)
+  {
+    shape(mesh);
+  }else{
+    beginShape(POINTS);
+    for(int i = 0; i < points.size(); i++){
+      PVector p = (PVector)points.get(i);
+      vertex(p.x, p.y, p.z);
+    }
+    
+   endShape();
+  }
+
   
  // popMatrix();
   
