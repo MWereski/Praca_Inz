@@ -19,6 +19,10 @@ int cols, rows;
 int scl = 1;
 int saveZ = 0;
 
+int moveObjX = 0;
+int moveObjY = 0;
+int moveObjZ = 0;
+
 float multiplier = 10f;
 
 float stepToChange = 1/multiplier;

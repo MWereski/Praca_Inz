@@ -27,6 +27,47 @@ boolean dist(float a, float b, float maxDist){
   return false;
 }
 
+void makeTriangleMesh(){
+   for(int p = 1; p < points.size()-2; p+=2){
+       
+       PVector p1 = (PVector)points.get(p-1);
+       PVector p2 = (PVector)points.get(p);
+       PVector p3 = (PVector)points.get(p+1);
+       PVector p4 = (PVector)points.get(p+2);
+       
+      if(abs(p3.x - p1.x) > 10) continue;
+     
+      if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p1.x, p1.y, p1.z);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+      
+      if(abs(p2.x - p3.x) > 10) continue;
+     
+      if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.vertex(p4.x, p4.y, p4.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+
+     } 
+}
+
 public void resetCameraPosition() {
   cam.reset();
 }
@@ -163,4 +204,28 @@ public void subRightPointsZ(){
 
 public void saveObj(){
    record = true; 
+}
+
+public void moveXp(){
+   moveObjX += 10;
+}
+
+public void moveXm(){
+   moveObjX -= 10; 
+}
+
+public void moveYp(){
+   moveObjY += 10;
+}
+
+public void moveYm(){
+   moveObjY -= 10; 
+}
+
+public void moveZp(){
+   moveObjZ += 10;
+}
+
+public void moveZm(){
+   moveObjZ -= 10; 
 }

@@ -152,6 +152,25 @@ void setLabelsText(){
      .setPosition(width-80, 565)
      .setColorValue(#67F9E5)
      ;
+     
+ cp5.addTextlabel("moveObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object X axis")
+     .setPosition(82, 124)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("moveObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Y axis")
+     .setPosition(82, 164)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("moveObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Z axis")
+     .setPosition(82, 204)
+     .setColorValue(#67F9E5)
+     ;
 
 }
 
@@ -332,9 +351,60 @@ void setButtons(){
      .setFont(createFont("Trebuchet MS", 16))
      .setColorBackground(#34C6B2)
      .setColorActive(#23B5A1) 
-     .setLabel("Save Object")
+     .setLabel("Export Object")
      .setSize(120, 30)
      .setPosition(65, 80)
+     ;
+     
+  cp5.addButton("moveXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 120)
+     ;
+  cp5.addButton("moveXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 120)
+     ;
+     
+  cp5.addButton("moveYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 160)
+     ;
+  cp5.addButton("moveYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 160)
+     ;
+     
+ cp5.addButton("moveZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 200)
+     ;
+  cp5.addButton("moveZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 200)
      ;
 }
 

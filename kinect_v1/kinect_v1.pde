@@ -121,13 +121,9 @@ void draw() {
 
       int avgD = avgZofPoint(iterationsOfAvg, newD, prevD);
       
-      if(abs(avgD-newD) > 300) avgD = max(newD, prevD) - abs(avgD-newD);
-      
-      //if(abs( newD - prevD) > 800) avgD = 0;
+      //if(abs(avgD-newD) > 300) avgD = max(newD, prevD) - abs(avgD-newD);
       
       if(abs( newD - prevD) > 650) avgD = 0;
-      
-      //if(avgD > 650) avgD = 0;
       
       smoothData[offset] = avgD;
       
@@ -158,22 +154,22 @@ void draw() {
       
       PVector point1 = depthToPointCloudPos(x, y, d);
       
-     // points.add(point1);
+      //points.add(point1);
       
       int offset2 = x + (y+1) * cols;
       float d2 =smoothData[offset2];
-      d2 = map(d2, 0, 4500, 2250, 0);
+     d2 = map(d2, 0, 4500, 2250, 0);
 
-      if(d2 > 1000*leftPointsZ) continue;
-      if(d2 < 1000*rightPointsZ) continue;
+     // if(d2 > 1000*leftPointsZ) continue;
+     //if(d2 < 1000*rightPointsZ) continue;
       
-      PVector point2 = depthToPointCloudPos(x, (y+1), d2);
+      //PVector point2 = depthToPointCloudPos(x, (y+1), d2);
       
       
       if(abs(d - d2) > 1) continue;
       
       points.add(point1);
-      points.add(point2);
+      //points.add(point2);
       //vertex(point1.x, point1.y, point1.z);
       //vertex(point2.x, point2.y, point2.z);
 
@@ -182,50 +178,14 @@ void draw() {
   }
   
    if(pointCloudToMesh){
-        for(int p = 1; p < points.size()-2; p+=2){
-       
-       PVector p1 = (PVector)points.get(p-1);
-       PVector p2 = (PVector)points.get(p);
-       PVector p3 = (PVector)points.get(p+1);
-       PVector p4 = (PVector)points.get(p+2);
-       
-      if(abs(p3.x - p1.x) > 10) continue;
-     
-      if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
-        continue;
-      }
-     
-      t = createShape();
-      t.beginShape(TRIANGLE_STRIP);
-      t.vertex(p1.x, p1.y, p1.z);
-      t.vertex(p2.x, p2.y, p2.z);
-      t.vertex(p3.x, p3.y, p3.z);
-      t.endShape();
-      
-      mesh.addChild(t);
-      
-      if(abs(p2.x - p3.x) > 10) continue;
-     
-      if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
-        continue;
-      }
-     
-      t = createShape();
-      t.beginShape(TRIANGLE_STRIP);
-      t.vertex(p2.x, p2.y, p2.z);
-      t.vertex(p3.x, p3.y, p3.z);
-      t.vertex(p4.x, p4.y, p4.z);
-      t.endShape();
-      
-      mesh.addChild(t);
-
-     } 
+       makeTriangleMesh();
    }
  // pushMatrix();
   if (record) {
     beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
-    saveZ = 1500;
+    saveZ = 2000;
   }  
+  translate(moveObjX, moveObjY, moveObjZ);
   if(pointCloudToMesh)
   {
     shape(mesh);
@@ -233,6 +193,7 @@ void draw() {
     beginShape(POINTS);
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
+
       vertex(p.x, p.y, p.z-saveZ);
   }
     
@@ -253,10 +214,4 @@ void draw() {
    
    gui();
 
-}
-
-void keyPressed() {
-  if (key == 's') {
-    record = true;
-  }
 }
