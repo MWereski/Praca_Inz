@@ -17,19 +17,20 @@ float maxDistance = 10;
 //reduce size of point cloud
 int cols, rows;
 int scl = 1;
+int saveZ = 0;
 
 float multiplier = 10f;
 
 float stepToChange = 1/multiplier;
 
-float leftPointsX = 2.5f;
-float rightPointsX = 2.5f;
+float leftPointsX = 2.7f;
+float rightPointsX = 3.7f;
 
 float leftPointsY = 3f;
 float rightPointsY = 3f;
 
-float leftPointsZ = 2.2f;
-float rightPointsZ = 1.7f;
+float leftPointsZ = 2.0f;
+float rightPointsZ = 1.9f;
 
 //smooth boiling points
 int [] newRawData;
@@ -51,3 +52,5 @@ boolean camMoveXYToggle = false;
 boolean camRotateToggle = true;
 boolean camZoomToggle = true;
 boolean pointCloudToMesh = false;
+
+boolean record = false;

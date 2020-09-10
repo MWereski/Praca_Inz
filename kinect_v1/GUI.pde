@@ -6,8 +6,12 @@ void gui() {
 
   fill(#1A1A1A, 100);
   strokeWeight(1);
+  //left top
   rect(width - 300, 2, 299, 303);
+  //left bottom
   rect(width - 300, 309, 299, 443);
+  //right top
+  rect(2, 70, 250, 303);
   
   cp5.draw();
   cam.endHUD();
@@ -322,6 +326,15 @@ void setButtons(){
      .setLabel("-")
      .setSize(30, 30)
      .setPosition(width-150, 560)
+     ;
+     
+ cp5.addButton("saveObj")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("Save Object")
+     .setSize(120, 30)
+     .setPosition(65, 80)
      ;
 }
 

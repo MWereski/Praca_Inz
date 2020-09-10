@@ -1,3 +1,44 @@
+import nervoussystem.obj.*;
+
+import toxi.audio.*;
+import toxi.color.*;
+import toxi.color.theory.*;
+import toxi.data.csv.*;
+import toxi.data.feeds.*;
+import toxi.data.feeds.util.*;
+import toxi.doap.*;
+import toxi.geom.*;
+import toxi.geom.mesh.*;
+import toxi.geom.mesh.subdiv.*;
+import toxi.geom.mesh2d.*;
+import toxi.geom.nurbs.*;
+import toxi.image.util.*;
+import toxi.math.*;
+import toxi.math.conversion.*;
+import toxi.math.noise.*;
+import toxi.math.waves.*;
+import toxi.music.*;
+import toxi.music.scale.*;
+import toxi.net.*;
+import toxi.newmesh.*;
+import toxi.nio.*;
+import toxi.physics2d.*;
+import toxi.physics2d.behaviors.*;
+import toxi.physics2d.constraints.*;
+import toxi.physics3d.*;
+import toxi.physics3d.behaviors.*;
+import toxi.physics3d.constraints.*;
+import toxi.processing.*;
+import toxi.sim.automata.*;
+import toxi.sim.dla.*;
+import toxi.sim.erosion.*;
+import toxi.sim.fluids.*;
+import toxi.sim.grayscott.*;
+import toxi.util.*;
+import toxi.util.datatypes.*;
+import toxi.util.events.*;
+import toxi.volume.*;
+
 import controlP5.*;
 
 import peasy.*;
@@ -73,7 +114,7 @@ void draw() {
   //reduce boiling points
   for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY); y++) {
     for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
-      int offset = x + y * w;
+      int offset = x + y * cols;
       
       int newD = newRawData[offset];
       int prevD = prevRawData[offset];
@@ -108,25 +149,25 @@ void draw() {
       //TRIANGLE_STRIP
     for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
       
-      int offset = x*scl + y*scl * w;
+      int offset = x + y * cols;
       float d =smoothData[offset];
       d = map(d, 0, 4500, 2250, 0);
 
       if(d > 1000*leftPointsZ) continue;
       if(d < 1000*rightPointsZ) continue;
       
-      PVector point1 = depthToPointCloudPos(x*scl, y*scl, d);
+      PVector point1 = depthToPointCloudPos(x, y, d);
       
      // points.add(point1);
       
-      int offset2 = x*scl + (y+1)*scl * w;
+      int offset2 = x + (y+1) * cols;
       float d2 =smoothData[offset2];
       d2 = map(d2, 0, 4500, 2250, 0);
 
       if(d2 > 1000*leftPointsZ) continue;
       if(d2 < 1000*rightPointsZ) continue;
       
-      PVector point2 = depthToPointCloudPos(x*scl, (y+1)*scl, d2);
+      PVector point2 = depthToPointCloudPos(x, (y+1), d2);
       
       
       if(abs(d - d2) > 1) continue;
@@ -181,6 +222,10 @@ void draw() {
      } 
    }
  // pushMatrix();
+  if (record) {
+    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
+    saveZ = 1500;
+  }  
   if(pointCloudToMesh)
   {
     shape(mesh);
@@ -188,12 +233,17 @@ void draw() {
     beginShape(POINTS);
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
-      vertex(p.x, p.y, p.z);
+      vertex(p.x, p.y, p.z-saveZ);
   }
     
    endShape();
   }
 
+  if (record) {
+    endRecord();
+    record = false;
+    saveZ = 0;
+  }
   
  // popMatrix();
   
@@ -203,4 +253,10 @@ void draw() {
    
    gui();
 
+}
+
+void keyPressed() {
+  if (key == 's') {
+    record = true;
+  }
 }

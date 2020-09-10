@@ -160,3 +160,7 @@ public void subRightPointsZ(){
      l.setText("Back: " + String.format(java.util.Locale.US,"%.1f", rightPointsZ));
   }
 }
+
+public void saveObj(){
+   record = true; 
+}
