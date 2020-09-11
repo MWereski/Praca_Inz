@@ -59,7 +59,7 @@ void setup() {
   cam.rotateX(CameraParams.k1);   
   cam.rotateY(CameraParams.k2); 
   cam.rotateZ(CameraParams.k3);
-  
+
   cam.setCenterDragHandler(null);
   cam.setResetOnDoubleClick(false);
     
@@ -98,7 +98,7 @@ void draw() {
   //Background draw
   background(0);
   
-  translate(0, 0, -1800);
+ // translate(0, 0, -1800);
   //scaling size of point cloud
   img = kinect.getPointCloudDepthImage();
 
@@ -177,14 +177,19 @@ void draw() {
       //endShape();
   }
   
-   if(pointCloudToMesh){
+  if(pointCloudToMesh){
        makeTriangleMesh();
-   }
+  }
  // pushMatrix();
   if (record) {
     beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
-    saveZ = 2000;
   }  
+
+  
+  rotateX(rotObjX);
+  rotateY(rotObjY);
+  rotateZ(rotObjZ);
+//box(100, 100, 100);
   translate(moveObjX, moveObjY, moveObjZ);
   if(pointCloudToMesh)
   {
@@ -194,7 +199,7 @@ void draw() {
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
 
-      vertex(p.x, p.y, p.z-saveZ);
+      vertex(p.x, p.y, p.z);
   }
     
    endShape();
@@ -203,7 +208,6 @@ void draw() {
   if (record) {
     endRecord();
     record = false;
-    saveZ = 0;
   }
   
  // popMatrix();

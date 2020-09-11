@@ -171,6 +171,25 @@ void setLabelsText(){
      .setPosition(82, 204)
      .setColorValue(#67F9E5)
      ;
+     
+   cp5.addTextlabel("rotObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object X axis")
+     .setPosition(82, 244)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("rotObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Y axis")
+     .setPosition(82, 284)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("rotObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Z axis")
+     .setPosition(82, 324)
+     .setColorValue(#67F9E5)
+     ;
 
 }
 
@@ -352,8 +371,8 @@ void setButtons(){
      .setColorBackground(#34C6B2)
      .setColorActive(#23B5A1) 
      .setLabel("Export Object")
-     .setSize(120, 30)
-     .setPosition(65, 80)
+     .setSize(130, 30)
+     .setPosition(60, 80)
      ;
      
   cp5.addButton("moveXm")
@@ -405,6 +424,58 @@ void setButtons(){
      .setLabel("+")
      .setSize(30, 30)
      .setPosition(47, 200)
+     ;
+     
+          
+  cp5.addButton("rotXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 240)
+     ;
+  cp5.addButton("rotXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 240)
+     ;
+     
+  cp5.addButton("rotYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 280)
+     ;
+  cp5.addButton("rotYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 280)
+     ;
+     
+ cp5.addButton("rotZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 320)
+     ;
+  cp5.addButton("rotZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 320)
      ;
 }
 

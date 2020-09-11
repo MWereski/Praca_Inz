@@ -229,3 +229,28 @@ public void moveZp(){
 public void moveZm(){
    moveObjZ -= 10; 
 }
+
+
+public void rotXp(){
+   rotObjX += 0.1f;
+}
+
+public void rotXm(){
+   rotObjX -= 0.1f; 
+}
+
+public void rotYp(){
+   rotObjY += 0.1f;
+}
+
+public void rotYm(){
+   rotObjY -= 0.1f;
+}
+
+public void rotZp(){
+   rotObjZ += 0.1f;
+}
+
+public void rotZm(){
+   rotObjZ -= 0.1f;
+}

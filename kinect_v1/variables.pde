@@ -4,7 +4,6 @@ KinectPV2 kinect;
 //Camera object
 PeasyCam cam;
 
-
 //depth img from kinect
 PImage img;
 
@@ -17,11 +16,14 @@ float maxDistance = 10;
 //reduce size of point cloud
 int cols, rows;
 int scl = 1;
-int saveZ = 0;
 
-int moveObjX = 0;
-int moveObjY = 0;
-int moveObjZ = 0;
+int moveObjX = -325;
+int moveObjY = -208;
+int moveObjZ = -2000;
+
+float rotObjX = 0f;
+float rotObjY = 0f;
+float rotObjZ = 0f;
 
 float multiplier = 10f;
 
