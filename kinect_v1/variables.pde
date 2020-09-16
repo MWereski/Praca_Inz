@@ -50,6 +50,7 @@ int step = 10;
 float rotStep = 0.1f;
 
 ArrayList points;
+ArrayList oldPoints;
 
 // GUI Object
 ControlP5 cp5;

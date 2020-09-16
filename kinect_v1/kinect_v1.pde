@@ -93,6 +93,8 @@ void setup() {
   
   //setting first point cloud data
   prevRawData = kinect.getRawDepthData();
+  
+  oldPoints = new ArrayList<PVector>();
 }
 
 void draw() {
@@ -134,10 +136,6 @@ void draw() {
   mesh = createShape(GROUP);
   //strokeWeight(2);
   //pushMatrix();
-  
-  strokeWeight(1);
-  stroke(#23B5A1);
-  fill(#23B5A1, 150);
   
   lights();
 
@@ -185,6 +183,21 @@ void draw() {
   if (record) {
     beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
   }  
+  beginShape(POINTS);
+  strokeWeight(1);
+  
+  
+   stroke(#23B5A1);
+  fill(#23B5A1, 150);
+  for(int i = 0; i < oldPoints.size(); i++){
+      PVector p = (PVector)oldPoints.get(i);
+
+      vertex(p.x, p.y, p.z);
+  }
+  endShape();
+  stroke(#FF3B42);
+  
+  fill(#FF3B42, 150);
 
   
   rotateX(rotObjX);
@@ -202,9 +215,11 @@ void draw() {
 
       vertex(p.x, p.y, p.z);
   }
+ 
     
    endShape();
   }
+
 
   if (record) {
     endRecord();

@@ -492,6 +492,14 @@ void setButtons(){
      .setSize(30, 30)
      .setPosition(47, 320)
      ;
+    cp5.addButton("addPointsButton")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("Add new Points")
+     .setSize(150, 30)
+     .setPosition(4, 460)
+     ;
 }
 
 void setToggles(){
@@ -549,7 +557,7 @@ void setTextfields(){
   cp5.addTextfield("moveStepTF")
      .setFont(createFont("Trebuchet MS", 16))
      .setColorLabel(#67F9E5) 
-     .setPosition(2, 400)
+     .setPosition(4, 400)
      .setSize(150, 20)
      .setFocus(false)
      .setInputFilter(1)
@@ -559,10 +567,10 @@ void setTextfields(){
     cp5.addTextfield("rotStepTF")
      .setFont(createFont("Trebuchet MS", 16))
      .setColorLabel(#67F9E5) 
-     .setPosition(2, 425)
+     .setPosition(4, 425)
      .setSize(150, 20)
      .setFocus(false)
-     .setInputFilter(1)
+     .setInputFilter(2)
      .setText(str(rotStep))
      .getCaptionLabel().hide();
 }

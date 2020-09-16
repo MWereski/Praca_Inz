@@ -277,3 +277,13 @@ public void rotZm(){
    String a = s.getText();
    rotObjZ -= float(a);
 }
+
+public void addPointsButton(){
+  for(int i = 0; i < points.size(); i++){
+      PVector p = (PVector)points.get(i);
+      p.x = p.x + moveObjX;
+      p.y = p.y + moveObjY;
+      p.z = p.z + moveObjZ;
+      oldPoints.add(p);
+  }
+}
