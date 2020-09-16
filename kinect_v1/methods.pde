@@ -207,50 +207,73 @@ public void saveObj(){
 }
 
 public void moveXp(){
-   moveObjX += 10;
+   Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX += int(a);
 }
 
 public void moveXm(){
-   moveObjX -= 10; 
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX -= int(a);
 }
 
 public void moveYp(){
-   moveObjY += 10;
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY += int(a);
 }
 
 public void moveYm(){
-   moveObjY -= 10; 
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY -= int(a); 
 }
 
 public void moveZp(){
-   moveObjZ += 10;
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ += int(a);
 }
 
 public void moveZm(){
-   moveObjZ -= 10; 
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ -= int(a); 
 }
 
-
 public void rotXp(){
-   rotObjX += 0.1f;
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX += float(a);
 }
 
 public void rotXm(){
-   rotObjX -= 0.1f; 
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX -= float(a); 
 }
 
 public void rotYp(){
-   rotObjY += 0.1f;
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY += float(a);
 }
 
 public void rotYm(){
-   rotObjY -= 0.1f;
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY -= float(a);
 }
 
 public void rotZp(){
-   rotObjZ += 0.1f;
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ += float(a);
 }
 
 public void rotZm(){
-   rotObjZ -= 0.1f;
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ -= float(a);
 }

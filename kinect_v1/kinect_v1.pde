@@ -77,6 +77,7 @@ void setup() {
   setLabelsText();
   setToggles();
   setButtons();
+  setTextfields();
   
   cp5.setAutoDraw(false);
 

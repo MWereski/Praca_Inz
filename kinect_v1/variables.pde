@@ -17,8 +17,8 @@ float maxDistance = 10;
 int cols, rows;
 int scl = 1;
 
-int moveObjX = -325;
-int moveObjY = -208;
+int moveObjX = -275;
+int moveObjY = -238;
 int moveObjZ = -2000;
 
 float rotObjX = 0f;
@@ -44,6 +44,10 @@ int [] prevRawData;
 int [] smoothData;
 
 int iterationsOfAvg = 4;
+
+int step = 10;
+
+float rotStep = 0.1f;
 
 ArrayList points;
 

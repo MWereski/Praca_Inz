@@ -29,14 +29,14 @@ void setLabelsText(){
      
   cp5.addTextlabel("leftClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click and move to rotate object")
+     .setText("Click and move to rotate camera")
      .setPosition(20, height-24-50)
      .setColorValue(#67F9E5)
      ;
      
   cp5.addTextlabel("wheelClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click wheel to move object")
+     .setText("Click wheel to move camera")
      .setPosition(20, height-24-80)
      .setColorValue(#67F9E5)
      ;
@@ -190,6 +190,21 @@ void setLabelsText(){
      .setPosition(82, 324)
      .setColorValue(#67F9E5)
      ;
+     
+  cp5.addTextlabel("moveStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move step")
+     .setPosition(156, 403)
+     .setColorValue(#67F9E5)
+     ;
+     
+  cp5.addTextlabel("rotStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate step")
+     .setPosition(156, 428)
+     .setColorValue(#67F9E5)
+     ;
+     
 
 }
 
@@ -529,4 +544,25 @@ void setToggles(){
      .setMode(ControlP5.SWITCH)
      ;
   
+}
+void setTextfields(){
+  cp5.addTextfield("moveStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(#67F9E5) 
+     .setPosition(2, 400)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(1)
+     .setText(str(step))
+     .getCaptionLabel().hide();
+     
+    cp5.addTextfield("rotStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(#67F9E5) 
+     .setPosition(2, 425)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(1)
+     .setText(str(rotStep))
+     .getCaptionLabel().hide();
 }
