@@ -1,6 +1,5 @@
 //Kinect object
 KinectPV2 kinect;
-
 //Camera object
 PeasyCam cam;
 

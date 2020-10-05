@@ -3,6 +3,45 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import nervoussystem.obj.*; 
+import toxi.audio.*; 
+import toxi.color.*; 
+import toxi.color.theory.*; 
+import toxi.data.csv.*; 
+import toxi.data.feeds.*; 
+import toxi.data.feeds.util.*; 
+import toxi.doap.*; 
+import toxi.geom.*; 
+import toxi.geom.mesh.*; 
+import toxi.geom.mesh.subdiv.*; 
+import toxi.geom.mesh2d.*; 
+import toxi.geom.nurbs.*; 
+import toxi.image.util.*; 
+import toxi.math.*; 
+import toxi.math.conversion.*; 
+import toxi.math.noise.*; 
+import toxi.math.waves.*; 
+import toxi.music.*; 
+import toxi.music.scale.*; 
+import toxi.net.*; 
+import toxi.newmesh.*; 
+import toxi.nio.*; 
+import toxi.physics2d.*; 
+import toxi.physics2d.behaviors.*; 
+import toxi.physics2d.constraints.*; 
+import toxi.physics3d.*; 
+import toxi.physics3d.behaviors.*; 
+import toxi.physics3d.constraints.*; 
+import toxi.processing.*; 
+import toxi.sim.automata.*; 
+import toxi.sim.dla.*; 
+import toxi.sim.erosion.*; 
+import toxi.sim.fluids.*; 
+import toxi.sim.grayscott.*; 
+import toxi.util.*; 
+import toxi.util.datatypes.*; 
+import toxi.util.events.*; 
+import toxi.volume.*; 
 import controlP5.*; 
 import peasy.*; 
 import KinectPV2.KJoint; 
@@ -25,6 +64,47 @@ public class kinect_v1 extends PApplet {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public void setup() {
   //main settings
   
@@ -39,7 +119,7 @@ public void setup() {
   cam.rotateX(CameraParams.k1);   
   cam.rotateY(CameraParams.k2); 
   cam.rotateZ(CameraParams.k3);
-  
+
   cam.setCenterDragHandler(null);
   cam.setResetOnDoubleClick(false);
     
@@ -57,6 +137,7 @@ public void setup() {
   setLabelsText();
   setToggles();
   setButtons();
+  setTextfields();
   
   cp5.setAutoDraw(false);
 
@@ -72,13 +153,15 @@ public void setup() {
   
   //setting first point cloud data
   prevRawData = kinect.getRawDepthData();
+  
+  oldPoints = new ArrayList<PVector>();
 }
 
 public void draw() {
   //Background draw
   background(0);
   
-  translate(0, 0, -1800);
+ // translate(0, 0, -1800);
   //scaling size of point cloud
   img = kinect.getPointCloudDepthImage();
 
@@ -94,20 +177,16 @@ public void draw() {
   //reduce boiling points
   for (int y = PApplet.parseInt(rows/leftPointsY); y < PApplet.parseInt(rows-rows/rightPointsY); y++) {
     for (int x = PApplet.parseInt(cols/leftPointsX); x < PApplet.parseInt(cols-cols/rightPointsX); x++) {
-      int offset = x + y * w;
+      int offset = x + y * cols;
       
       int newD = newRawData[offset];
       int prevD = prevRawData[offset];
 
       int avgD = avgZofPoint(iterationsOfAvg, newD, prevD);
       
-      if(abs(avgD-newD) > 300) avgD = max(newD, prevD) - abs(avgD-newD);
-      
-      //if(abs( newD - prevD) > 800) avgD = 0;
+      //if(abs(avgD-newD) > 300) avgD = max(newD, prevD) - abs(avgD-newD);
       
       if(abs( newD - prevD) > 650) avgD = 0;
-      
-      //if(avgD > 650) avgD = 0;
       
       smoothData[offset] = avgD;
       
@@ -118,10 +197,6 @@ public void draw() {
   //strokeWeight(2);
   //pushMatrix();
   
-  strokeWeight(1);
-  stroke(0xff23B5A1);
-  fill(0xff23B5A1, 150);
-  
   lights();
 
   for (int y = PApplet.parseInt(rows/leftPointsY); y < PApplet.parseInt(rows-rows/rightPointsY);  y++) {
@@ -129,31 +204,31 @@ public void draw() {
       //TRIANGLE_STRIP
     for (int x = PApplet.parseInt(cols/leftPointsX); x < PApplet.parseInt(cols-cols/rightPointsX); x++) {
       
-      int offset = x*scl + y*scl * w;
+      int offset = x + y * cols;
       float d =smoothData[offset];
       d = map(d, 0, 4500, 2250, 0);
 
       if(d > 1000*leftPointsZ) continue;
       if(d < 1000*rightPointsZ) continue;
       
-      PVector point1 = depthToPointCloudPos(x*scl, y*scl, d);
+      PVector point1 = depthToPointCloudPos(x, y, d);
       
-     // points.add(point1);
+      //points.add(point1);
       
-      int offset2 = x*scl + (y+1)*scl * w;
+      int offset2 = x + (y+1) * cols;
       float d2 =smoothData[offset2];
-      d2 = map(d2, 0, 4500, 2250, 0);
+     d2 = map(d2, 0, 4500, 2250, 0);
 
-      if(d2 > 1000*leftPointsZ) continue;
-      if(d2 < 1000*rightPointsZ) continue;
+     // if(d2 > 1000*leftPointsZ) continue;
+     //if(d2 < 1000*rightPointsZ) continue;
       
-      PVector point2 = depthToPointCloudPos(x*scl, (y+1)*scl, d2);
+      //PVector point2 = depthToPointCloudPos(x, (y+1), d2);
       
       
       if(abs(d - d2) > 1) continue;
       
       points.add(point1);
-      points.add(point2);
+      //points.add(point2);
       //vertex(point1.x, point1.y, point1.z);
       //vertex(point2.x, point2.y, point2.z);
 
@@ -161,47 +236,37 @@ public void draw() {
       //endShape();
   }
   
-   if(pointCloudToMesh){
-        for(int p = 1; p < points.size()-2; p+=2){
-       
-       PVector p1 = (PVector)points.get(p-1);
-       PVector p2 = (PVector)points.get(p);
-       PVector p3 = (PVector)points.get(p+1);
-       PVector p4 = (PVector)points.get(p+2);
-       
-      if(abs(p3.x - p1.x) > 10) continue;
-     
-      if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
-        continue;
-      }
-     
-      t = createShape();
-      t.beginShape(TRIANGLE_STRIP);
-      t.vertex(p1.x, p1.y, p1.z);
-      t.vertex(p2.x, p2.y, p2.z);
-      t.vertex(p3.x, p3.y, p3.z);
-      t.endShape();
-      
-      mesh.addChild(t);
-      
-      if(abs(p2.x - p3.x) > 10) continue;
-     
-      if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
-        continue;
-      }
-     
-      t = createShape();
-      t.beginShape(TRIANGLE_STRIP);
-      t.vertex(p2.x, p2.y, p2.z);
-      t.vertex(p3.x, p3.y, p3.z);
-      t.vertex(p4.x, p4.y, p4.z);
-      t.endShape();
-      
-      mesh.addChild(t);
-
-     } 
-   }
+  if(pointCloudToMesh){
+       makeTriangleMesh();
+  }
  // pushMatrix();
+  if (record) {
+
+    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
+  }  
+  beginShape(POINTS);
+  strokeWeight(1);
+  
+  stroke(0xff23B5A1);
+  fill(0xff23B5A1, 150);
+  for(int i = 0; i < oldPoints.size(); i++){
+      PVector p = (PVector)oldPoints.get(i);
+
+      vertex(p.x, p.y, p.z);
+
+  }
+
+  endShape();
+  stroke(0xffFF3B42);
+  
+  fill(0xffFF3B42, 150);
+
+  
+  rotateX(rotObjX);
+  rotateY(rotObjY);
+  rotateZ(rotObjZ);
+//box(100, 100, 100);
+  translate(moveObjX, moveObjY, moveObjZ);
   if(pointCloudToMesh)
   {
     shape(mesh);
@@ -209,12 +274,18 @@ public void draw() {
     beginShape(POINTS);
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
+
       vertex(p.x, p.y, p.z);
+
   }
-    
    endShape();
   }
 
+
+  if (record) {
+    endRecord();
+    record = false;
+  }
   
  // popMatrix();
   
@@ -233,8 +304,12 @@ public void gui() {
 
   fill(0xff1A1A1A, 100);
   strokeWeight(1);
+  //left top
   rect(width - 300, 2, 299, 303);
+  //left bottom
   rect(width - 300, 309, 299, 443);
+  //right top
+  rect(2, 70, 250, 303);
   
   cp5.draw();
   cam.endHUD();
@@ -252,14 +327,14 @@ public void setLabelsText(){
      
   cp5.addTextlabel("leftClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click and move to rotate object")
+     .setText("Click and move to rotate camera")
      .setPosition(20, height-24-50)
      .setColorValue(0xff67F9E5)
      ;
      
   cp5.addTextlabel("wheelClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click wheel to move object")
+     .setText("Click wheel to move camera")
      .setPosition(20, height-24-80)
      .setColorValue(0xff67F9E5)
      ;
@@ -375,6 +450,59 @@ public void setLabelsText(){
      .setPosition(width-80, 565)
      .setColorValue(0xff67F9E5)
      ;
+     
+ cp5.addTextlabel("moveObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object X axis")
+     .setPosition(82, 124)
+     .setColorValue(0xff67F9E5)
+     ;
+  cp5.addTextlabel("moveObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Y axis")
+     .setPosition(82, 164)
+     .setColorValue(0xff67F9E5)
+     ;
+  cp5.addTextlabel("moveObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Z axis")
+     .setPosition(82, 204)
+     .setColorValue(0xff67F9E5)
+     ;
+     
+   cp5.addTextlabel("rotObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object X axis")
+     .setPosition(82, 244)
+     .setColorValue(0xff67F9E5)
+     ;
+  cp5.addTextlabel("rotObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Y axis")
+     .setPosition(82, 284)
+     .setColorValue(0xff67F9E5)
+     ;
+  cp5.addTextlabel("rotObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Z axis")
+     .setPosition(82, 324)
+     .setColorValue(0xff67F9E5)
+     ;
+     
+  cp5.addTextlabel("moveStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move step")
+     .setPosition(156, 403)
+     .setColorValue(0xff67F9E5)
+     ;
+     
+  cp5.addTextlabel("rotStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate step")
+     .setPosition(156, 428)
+     .setColorValue(0xff67F9E5)
+     ;
+     
 
 }
 
@@ -550,6 +678,126 @@ public void setButtons(){
      .setSize(30, 30)
      .setPosition(width-150, 560)
      ;
+     
+ cp5.addButton("saveObj")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("Export Object")
+     .setSize(130, 30)
+     .setPosition(60, 80)
+     ;
+     
+  cp5.addButton("moveXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 120)
+     ;
+  cp5.addButton("moveXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 120)
+     ;
+     
+  cp5.addButton("moveYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 160)
+     ;
+  cp5.addButton("moveYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 160)
+     ;
+     
+ cp5.addButton("moveZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 200)
+     ;
+  cp5.addButton("moveZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 200)
+     ;
+     
+          
+  cp5.addButton("rotXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 240)
+     ;
+  cp5.addButton("rotXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 240)
+     ;
+     
+  cp5.addButton("rotYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 280)
+     ;
+  cp5.addButton("rotYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 280)
+     ;
+     
+ cp5.addButton("rotZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 320)
+     ;
+  cp5.addButton("rotZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 320)
+     ;
+    cp5.addButton("addPointsButton")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(0xff34C6B2)
+     .setColorActive(0xff23B5A1) 
+     .setLabel("Add new Points")
+     .setSize(150, 30)
+     .setPosition(4, 460)
+     ;
 }
 
 public void setToggles(){
@@ -603,13 +851,34 @@ public void setToggles(){
      ;
   
 }
+public void setTextfields(){
+  cp5.addTextfield("moveStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(0xff67F9E5) 
+     .setPosition(4, 400)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(1)
+     .setText(str(step))
+     .getCaptionLabel().hide();
+     
+    cp5.addTextfield("rotStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(0xff67F9E5) 
+     .setPosition(4, 425)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(2)
+     .setText(str(rotStep))
+     .getCaptionLabel().hide();
+}
 static class CameraParams {
   
-  static float cx = 256.4065f;
-  static float cy = 256.64053f;
+  static float cx = 20f;
+  static float cy = 20f;
   static float cz = 0;
   
-  static float doubleDist = 366.775560f;
+  static float doubleDist = 266.775560f;
   
   static float k1 = 0;
   static float k2 = 0;
@@ -642,6 +911,47 @@ public boolean dist(float a, float b, float maxDist){
     return true;
   }
   return false;
+}
+
+public void makeTriangleMesh(){
+   for(int p = 1; p < points.size()-2; p+=2){
+       
+       PVector p1 = (PVector)points.get(p-1);
+       PVector p2 = (PVector)points.get(p);
+       PVector p3 = (PVector)points.get(p+1);
+       PVector p4 = (PVector)points.get(p+2);
+       
+      if(abs(p3.x - p1.x) > 10) continue;
+     
+      if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p1.x, p1.y, p1.z);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+      
+      if(abs(p2.x - p3.x) > 10) continue;
+     
+      if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.vertex(p4.x, p4.y, p4.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+
+     } 
 }
 
 public void resetCameraPosition() {
@@ -777,12 +1087,96 @@ public void subRightPointsZ(){
      l.setText("Back: " + String.format(java.util.Locale.US,"%.1f", rightPointsZ));
   }
 }
+
+public void saveObj(){
+   record = true; 
+}
+
+public void moveXp(){
+   Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX += PApplet.parseInt(a);
+}
+
+public void moveXm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX -= PApplet.parseInt(a);
+}
+
+public void moveYp(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY += PApplet.parseInt(a);
+}
+
+public void moveYm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY -= PApplet.parseInt(a); 
+}
+
+public void moveZp(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ += PApplet.parseInt(a);
+}
+
+public void moveZm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ -= PApplet.parseInt(a); 
+}
+
+public void rotXp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX += PApplet.parseFloat(a);
+}
+
+public void rotXm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX -= PApplet.parseFloat(a); 
+}
+
+public void rotYp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY += PApplet.parseFloat(a);
+}
+
+public void rotYm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY -= PApplet.parseFloat(a);
+}
+
+public void rotZp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ += PApplet.parseFloat(a);
+}
+
+public void rotZm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ -= PApplet.parseFloat(a);
+}
+
+public void addPointsButton(){
+  for(int i = 0; i < points.size(); i++){
+      PVector p = (PVector)points.get(i);
+      p.x = p.x + moveObjX;
+      p.y = p.y + moveObjY;
+      p.z = p.z + moveObjZ;
+      oldPoints.add(p);
+  }
+}
 //Kinect object
 KinectPV2 kinect;
-
 //Camera object
 PeasyCam cam;
-
 
 //depth img from kinect
 PImage img;
@@ -797,18 +1191,26 @@ float maxDistance = 10;
 int cols, rows;
 int scl = 1;
 
+int moveObjX = -275;
+int moveObjY = -238;
+int moveObjZ = -2000;
+
+float rotObjX = 0f;
+float rotObjY = 0f;
+float rotObjZ = 0f;
+
 float multiplier = 10f;
 
 float stepToChange = 1/multiplier;
 
-float leftPointsX = 2.5f;
-float rightPointsX = 2.5f;
+float leftPointsX = 2.7f;
+float rightPointsX = 3.7f;
 
 float leftPointsY = 3f;
 float rightPointsY = 3f;
 
-float leftPointsZ = 2.2f;
-float rightPointsZ = 1.7f;
+float leftPointsZ = 2.0f;
+float rightPointsZ = 1.9f;
 
 //smooth boiling points
 int [] newRawData;
@@ -817,7 +1219,12 @@ int [] smoothData;
 
 int iterationsOfAvg = 4;
 
+int step = 10;
+
+float rotStep = 0.1f;
+
 ArrayList points;
+ArrayList oldPoints;
 
 // GUI Object
 ControlP5 cp5;
@@ -830,6 +1237,8 @@ boolean camMoveXYToggle = false;
 boolean camRotateToggle = true;
 boolean camZoomToggle = true;
 boolean pointCloudToMesh = false;
+
+boolean record = false;
   public void settings() {  fullScreen(P3D);  smooth(8); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "kinect_v1" };

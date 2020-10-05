@@ -6,8 +6,12 @@ void gui() {
 
   fill(#1A1A1A, 100);
   strokeWeight(1);
+  //left top
   rect(width - 300, 2, 299, 303);
+  //left bottom
   rect(width - 300, 309, 299, 443);
+  //right top
+  rect(2, 70, 250, 303);
   
   cp5.draw();
   cam.endHUD();
@@ -25,14 +29,14 @@ void setLabelsText(){
      
   cp5.addTextlabel("leftClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click and move to rotate object")
+     .setText("Click and move to rotate camera")
      .setPosition(20, height-24-50)
      .setColorValue(#67F9E5)
      ;
      
   cp5.addTextlabel("wheelClickLabel")
      .setFont(createFont("Trebuchet MS", 16))
-     .setText("Click wheel to move object")
+     .setText("Click wheel to move camera")
      .setPosition(20, height-24-80)
      .setColorValue(#67F9E5)
      ;
@@ -148,6 +152,59 @@ void setLabelsText(){
      .setPosition(width-80, 565)
      .setColorValue(#67F9E5)
      ;
+     
+ cp5.addTextlabel("moveObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object X axis")
+     .setPosition(82, 124)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("moveObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Y axis")
+     .setPosition(82, 164)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("moveObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move object Z axis")
+     .setPosition(82, 204)
+     .setColorValue(#67F9E5)
+     ;
+     
+   cp5.addTextlabel("rotObjX")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object X axis")
+     .setPosition(82, 244)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("rotObjY")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Y axis")
+     .setPosition(82, 284)
+     .setColorValue(#67F9E5)
+     ;
+  cp5.addTextlabel("rotObjZ")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate object Z axis")
+     .setPosition(82, 324)
+     .setColorValue(#67F9E5)
+     ;
+     
+  cp5.addTextlabel("moveStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Move step")
+     .setPosition(156, 403)
+     .setColorValue(#67F9E5)
+     ;
+     
+  cp5.addTextlabel("rotStepLabel")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setText("Rotate step")
+     .setPosition(156, 428)
+     .setColorValue(#67F9E5)
+     ;
+     
 
 }
 
@@ -323,6 +380,126 @@ void setButtons(){
      .setSize(30, 30)
      .setPosition(width-150, 560)
      ;
+     
+ cp5.addButton("saveObj")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("Export Object")
+     .setSize(130, 30)
+     .setPosition(60, 80)
+     ;
+     
+  cp5.addButton("moveXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 120)
+     ;
+  cp5.addButton("moveXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 120)
+     ;
+     
+  cp5.addButton("moveYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 160)
+     ;
+  cp5.addButton("moveYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 160)
+     ;
+     
+ cp5.addButton("moveZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 200)
+     ;
+  cp5.addButton("moveZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 200)
+     ;
+     
+          
+  cp5.addButton("rotXm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 240)
+     ;
+  cp5.addButton("rotXp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 240)
+     ;
+     
+  cp5.addButton("rotYp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 280)
+     ;
+  cp5.addButton("rotYm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 280)
+     ;
+     
+ cp5.addButton("rotZm")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("-")
+     .setSize(30, 30)
+     .setPosition(12, 320)
+     ;
+  cp5.addButton("rotZp")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("+")
+     .setSize(30, 30)
+     .setPosition(47, 320)
+     ;
+    cp5.addButton("addPointsButton")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorBackground(#34C6B2)
+     .setColorActive(#23B5A1) 
+     .setLabel("Add new Points")
+     .setSize(150, 30)
+     .setPosition(4, 460)
+     ;
 }
 
 void setToggles(){
@@ -375,4 +552,25 @@ void setToggles(){
      .setMode(ControlP5.SWITCH)
      ;
   
+}
+void setTextfields(){
+  cp5.addTextfield("moveStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(#67F9E5) 
+     .setPosition(4, 400)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(1)
+     .setText(str(step))
+     .getCaptionLabel().hide();
+     
+    cp5.addTextfield("rotStepTF")
+     .setFont(createFont("Trebuchet MS", 16))
+     .setColorLabel(#67F9E5) 
+     .setPosition(4, 425)
+     .setSize(150, 20)
+     .setFocus(false)
+     .setInputFilter(2)
+     .setText(str(rotStep))
+     .getCaptionLabel().hide();
 }
