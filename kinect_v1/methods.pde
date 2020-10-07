@@ -28,14 +28,15 @@ boolean dist(float a, float b, float maxDist){
 }
 
 void makeTriangleMesh(){
-   for(int p = 1; p < points.size()-2; p+=2){
+   if(radioButtonsVal == 2){
+    for(int p = 1; p < points.size()-2; p+=2){
        
        PVector p1 = (PVector)points.get(p-1);
        PVector p2 = (PVector)points.get(p);
        PVector p3 = (PVector)points.get(p+1);
        PVector p4 = (PVector)points.get(p+2);
        
-      if(abs(p3.x - p1.x) > 10) continue;
+      if(abs(p3.x - p1.x) > 1) continue;
      
       if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
         continue;
@@ -43,14 +44,17 @@ void makeTriangleMesh(){
      
       t = createShape();
       t.beginShape(TRIANGLE_STRIP);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p1.x, p1.y, p1.z);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p2.x, p2.y, p2.z);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p3.x, p3.y, p3.z);
       t.endShape();
       
       mesh.addChild(t);
       
-      if(abs(p2.x - p3.x) > 10) continue;
+      if(abs(p2.x - p3.x) > 1) continue;
      
       if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
         continue;
@@ -58,14 +62,99 @@ void makeTriangleMesh(){
      
       t = createShape();
       t.beginShape(TRIANGLE_STRIP);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p2.x, p2.y, p2.z);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p3.x, p3.y, p3.z);
+      t.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
       t.vertex(p4.x, p4.y, p4.z);
       t.endShape();
       
       mesh.addChild(t);
+ 
+   }
+  }else if(radioButtonsVal == 1){
+     meshTM = new TriangleMesh("shape");
+   for(int p = 1; p < points.size()-2; p+=2){
+     PVector p1 = (PVector)points.get(p);
+     AABB box = new AABB(0.06 * p1.z/256.0);
+     TriangleMesh m = (TriangleMesh) box.toMesh();
+     m.translate(p1.x, p1.y, p1.z);
+     
+     meshTM.addMesh(m);
+   }
+    
+  }
+  
+   
+  // mesh.beginShape(TRIANGLE_STRIP);
+  
+  // for(int p = 1; p < points.size()-2; p+=2){
+  //    PVector p1 = (PVector)points.get(p-1);
+  //    PVector p2 = (PVector)points.get(p);
+  //    PVector p3 = (PVector)points.get(p+1);
+  //    PVector p4 = (PVector)points.get(p+2);
+      
+  //   mesh.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p1.x, p1.y, p1.z);
+  //   mesh.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p2.x, p2.y, p2.z);
+  //   mesh.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p3.x, p3.y, p3.z);
+     
+  //   mesh.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p3.x, p3.y, p3.z);
+  //   mesh.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p2.x, p2.y, p2.z);
+  //   mesh.fill( lerpC( color(255,0,0),color(0,0,255),0 ));
+  //   mesh.vertex(p1.x, p1.y, p1.z);
 
-     } 
+  // }
+  //mesh.endShape(); 
+}
+
+public void testColorMesh(PGraphics pg){
+pg.beginShape(TRIANGLE_STRIP);
+   for(int p = 1; p < points.size()-2; p+=3){
+      PVector p1 = (PVector)points.get(p-1);
+      PVector p2 = (PVector)points.get(p);
+      PVector p3 = (PVector)points.get(p+1);
+      PVector p4 = (PVector)points.get(p+2);
+      
+      //if(abs(p3.x - p1.x) > 1) continue;
+     
+      //if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
+      // continue;
+     // }
+     // if(dist(p1.x, p2.x, maxDistance) || dist(p1.x, p3.x, maxDistance) || dist(p2.x, p3.x, maxDistance)){
+    // //  continue;
+//}
+
+     pg.fill( random(255), random(255), random(255));
+     pg.vertex(p1.x, p1.y, p1.z);
+     pg.fill( random(255), random(255), random(255));
+     pg.vertex(p2.x, p2.y, p2.z);
+     pg.fill( random(255), random(255), random(255));
+     pg.vertex(p3.x, p3.y, p3.z);
+     
+     //if(abs(p2.x - p3.x) > 1) continue;
+     
+      //if(dist(p3.z, p2.z, maxDistance) || dist(p3.z, p1.z, maxDistance) || dist(p2.z, p1.z, maxDistance)){
+     //  continue;
+    //  }
+    //  if(dist(p3.x, p2.x, maxDistance) || dist(p3.x, p1.x, maxDistance) || dist(p2.x, p1.x, maxDistance)){
+    //   continue;
+    //  }
+     
+     pg.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+     pg.vertex(p3.x, p3.y, p3.z);
+     pg.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+     pg.vertex(p2.x, p2.y, p2.z);
+     pg.fill( lerpColor( color(255,0,0),color(0,0,255),0 ));
+     pg.vertex(p1.x, p1.y, p1.z);
+
+   }
+  pg.endShape();
 }
 
 public void resetCameraPosition() {
@@ -285,5 +374,10 @@ public void addPointsButton(){
       p.y = p.y + moveObjY;
       p.z = p.z + moveObjZ;
       oldPoints.add(p);
+  }
+}
+void controlEvent(ControlEvent theEvent) {
+  if(theEvent.isFrom(r)) {
+    radioButtonsVal = (int)theEvent.getValue();
   }
 }

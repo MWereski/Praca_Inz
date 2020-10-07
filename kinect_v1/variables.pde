@@ -9,6 +9,10 @@ PImage img;
 //main mesh and single tris
 PShape mesh, t;
 
+RadioButton r;
+
+int radioButtonsVal = 2;
+
 //max distance to draw triangle
 float maxDistance = 10;
 
@@ -50,6 +54,9 @@ float rotStep = 0.1f;
 
 ArrayList points;
 ArrayList oldPoints;
+
+TriangleMesh meshTM;
+ToxiclibsSupport gfx;
 
 // GUI Object
 ControlP5 cp5;

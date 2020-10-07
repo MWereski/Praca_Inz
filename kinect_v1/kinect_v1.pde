@@ -78,6 +78,7 @@ void setup() {
   setToggles();
   setButtons();
   setTextfields();
+  setRadioButtons();
   
   cp5.setAutoDraw(false);
 
@@ -95,6 +96,9 @@ void setup() {
   prevRawData = kinect.getRawDepthData();
   
   oldPoints = new ArrayList<PVector>();
+  
+  
+  gfx = new ToxiclibsSupport(this);
 }
 
 void draw() {
@@ -134,14 +138,10 @@ void draw() {
   }
   points = new ArrayList<PVector>();
   mesh = createShape(GROUP);
-  //strokeWeight(2);
-  //pushMatrix();
   
   lights();
 
   for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY);  y++) {
-      //beginShape(POINTS);
-      //TRIANGLE_STRIP
     for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
       
       int offset = x + y * cols;
@@ -153,37 +153,56 @@ void draw() {
       
       PVector point1 = depthToPointCloudPos(x, y, d);
       
-      //points.add(point1);
       
       int offset2 = x + (y+1) * cols;
       float d2 =smoothData[offset2];
      d2 = map(d2, 0, 4500, 2250, 0);
 
-     // if(d2 > 1000*leftPointsZ) continue;
-     //if(d2 < 1000*rightPointsZ) continue;
+      if(d2 > 1000*leftPointsZ) continue;
+     if(d2 < 1000*rightPointsZ) continue;
       
-      //PVector point2 = depthToPointCloudPos(x, (y+1), d2);
+      PVector point2 = depthToPointCloudPos(x, (y+1), d2);
       
       
       if(abs(d - d2) > 1) continue;
       
       points.add(point1);
-      //points.add(point2);
-      //vertex(point1.x, point1.y, point1.z);
-      //vertex(point2.x, point2.y, point2.z);
+        if(pointCloudToMesh){
+           points.add(point2);
+        }
 
     }
-      //endShape();
   }
-  
+
   if(pointCloudToMesh){
        makeTriangleMesh();
+       
+       r.show();
+  }else{
+   r.hide(); 
+    
+  }
+  if (record) {
+    if(pointCloudToMesh){
+      if(radioButtonsVal == 2){
+      OBJExport obj = (OBJExport) createGraphics(10,10,"nervoussystem.obj.OBJExport","colored.obj");
+      obj.setColor(true);
+      obj.beginDraw();
+      testColorMesh(obj);
+      obj.endDraw();
+      obj.dispose();
+      record = false; 
+        
+      }else if(radioButtonsVal == 1){
+        meshTM.saveAsOBJ(sketchPath("mesh.obj"));
+      }
+    }else{
+      
+    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
+    }
   }
  // pushMatrix();
-  if (record) {
-
-    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
-  }  
+  
   beginShape(POINTS);
   strokeWeight(1);
   
@@ -209,7 +228,15 @@ void draw() {
   translate(moveObjX, moveObjY, moveObjZ);
   if(pointCloudToMesh)
   {
-    shape(mesh);
+    
+    switch(radioButtonsVal){
+      case(1): gfx.mesh(meshTM); break;
+      case(2): shape(mesh); break;
+      
+    }
+    //shape(mesh);
+     //gfx.mesh(meshTM);
+     
   }else{
     beginShape(POINTS);
     for(int i = 0; i < points.size(); i++){
@@ -223,8 +250,13 @@ void draw() {
 
 
   if (record) {
+    if(pointCloudToMesh){
+      
+    }else{
+      
     endRecord();
     record = false;
+    }
   }
   
  // popMatrix();
