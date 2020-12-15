@@ -27,6 +27,47 @@ boolean dist(float a, float b, float maxDist){
   return false;
 }
 
+void makeTriangleMesh(){
+   for(int p = 1; p < points.size()-2; p+=2){
+       
+       PVector p1 = (PVector)points.get(p-1);
+       PVector p2 = (PVector)points.get(p);
+       PVector p3 = (PVector)points.get(p+1);
+       PVector p4 = (PVector)points.get(p+2);
+       
+      if(abs(p3.x - p1.x) > 10) continue;
+     
+      if(dist(p1.z, p2.z, maxDistance) || dist(p1.z, p3.z, maxDistance) || dist(p2.z, p3.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p1.x, p1.y, p1.z);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+      
+      if(abs(p2.x - p3.x) > 10) continue;
+     
+      if(dist(p2.z, p3.z, maxDistance) || dist(p2.z, p4.z, maxDistance) || dist(p3.z, p4.z, maxDistance)){
+        continue;
+      }
+     
+      t = createShape();
+      t.beginShape(TRIANGLE_STRIP);
+      t.vertex(p2.x, p2.y, p2.z);
+      t.vertex(p3.x, p3.y, p3.z);
+      t.vertex(p4.x, p4.y, p4.z);
+      t.endShape();
+      
+      mesh.addChild(t);
+
+     } 
+}
+
 public void resetCameraPosition() {
   cam.reset();
 }
@@ -158,5 +199,91 @@ public void subRightPointsZ(){
    rightPointsZ -= stepToChange; 
      Textlabel l = (Textlabel)cp5.get("rightPointsZLabel");
      l.setText("Back: " + String.format(java.util.Locale.US,"%.1f", rightPointsZ));
+  }
+}
+
+public void saveObj(){
+   record = true; 
+}
+
+public void moveXp(){
+   Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX += int(a);
+}
+
+public void moveXm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjX -= int(a);
+}
+
+public void moveYp(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY += int(a);
+}
+
+public void moveYm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjY -= int(a); 
+}
+
+public void moveZp(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ += int(a);
+}
+
+public void moveZm(){
+  Textfield s = (Textfield)cp5.get("moveStepTF");
+   String a = s.getText();
+   moveObjZ -= int(a); 
+}
+
+public void rotXp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX += float(a);
+}
+
+public void rotXm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjX -= float(a); 
+}
+
+public void rotYp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY += float(a);
+}
+
+public void rotYm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjY -= float(a);
+}
+
+public void rotZp(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ += float(a);
+}
+
+public void rotZm(){
+  Textfield s = (Textfield)cp5.get("rotStepTF");
+   String a = s.getText();
+   rotObjZ -= float(a);
+}
+
+public void addPointsButton(){
+  for(int i = 0; i < points.size(); i++){
+      PVector p = (PVector)points.get(i);
+      p.x = p.x + moveObjX;
+      p.y = p.y + moveObjY;
+      p.z = p.z + moveObjZ;
+      oldPoints.add(p);
   }
 }

@@ -38,6 +38,9 @@ import toxi.util.*;
 import toxi.util.datatypes.*;
 import toxi.util.events.*;
 import toxi.volume.*;
+import java.nio.FloatBuffer;
+import java.nio.*; 
+import java.util.*;
 
 import controlP5.*;
 
@@ -78,6 +81,7 @@ void setup() {
   setToggles();
   setButtons();
   setTextfields();
+  setRadioButtons();
   
   cp5.setAutoDraw(false);
 
@@ -88,6 +92,8 @@ void setup() {
   //Enable point cloud
   kinect.enableDepthImg(true);
   kinect.enablePointCloud(true);
+  kinect.enableColorImg(true);
+  kinect.enableColorPointCloud(true); 
 
   kinect.init();
   
@@ -95,111 +101,142 @@ void setup() {
   prevRawData = kinect.getRawDepthData();
   
   oldPoints = new ArrayList<PVector>();
+  
+  gfx = new ToxiclibsSupport(this);
 }
 
 void draw() {
   //Background draw
   background(0);
   
- // translate(0, 0, -1800);
+    // translate(0, 0, -1800);
   //scaling size of point cloud
   img = kinect.getPointCloudDepthImage();
+  
+  imgRGB = kinect.getColorImage();
+ 
+ 
+  aaa = imgRGB.get();
+ 
+  aaa.resize(512, 424);
 
   int w = img.width;
   int h = img.height;
-  
+
   cols = w / scl;
   rows = h / scl;
-
+   
+  //println(cols, rows);
+   
   smoothData = new int [cols * rows];
-
+  
   newRawData = kinect.getRawDepthData();
-  //reduce boiling points
-  for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY); y++) {
-    for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
-      int offset = x + y * cols;
-      
-      int newD = newRawData[offset];
-      int prevD = prevRawData[offset];
 
-      int avgD = avgZofPoint(iterationsOfAvg, newD, prevD);
-      
-      //if(abs(avgD-newD) > 300) avgD = max(newD, prevD) - abs(avgD-newD);
-      
-      if(abs( newD - prevD) > 650) avgD = 0;
-      
-      smoothData[offset] = avgD;
-      
-    }
+  //image(aaa, 0, 0);
+  
+  for(int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY); y++){
+   for(int x = int(rows/leftPointsX); x < int(rows-rows/rightPointsX); x++){
+        int offset = x + y * cols;
+        
+        int newD = newRawData[offset];
+        int prevD = prevRawData[offset];
+        
+        int avgD = avgZofPoint(iterationsOfAvg, newD, prevD);
+        
+        if(abs(newD - prevD) > 640) avgD = 0;
+        
+        smoothData[offset] = avgD;
+    } 
   }
+
   points = new ArrayList<PVector>();
   mesh = createShape(GROUP);
-  //strokeWeight(2);
-  //pushMatrix();
-  
+
   lights();
 
   for (int y = int(rows/leftPointsY); y < int(rows-rows/rightPointsY);  y++) {
-      //beginShape(POINTS);
-      //TRIANGLE_STRIP
     for (int x = int(cols/leftPointsX); x < int(cols-cols/rightPointsX); x++) {
-      
+
       int offset = x + y * cols;
       float d =smoothData[offset];
       d = map(d, 0, 4500, 2250, 0);
 
       if(d > 1000*leftPointsZ) continue;
       if(d < 1000*rightPointsZ) continue;
-      
+
       PVector point1 = depthToPointCloudPos(x, y, d);
-      
-      //points.add(point1);
-      
+
+
       int offset2 = x + (y+1) * cols;
       float d2 =smoothData[offset2];
      d2 = map(d2, 0, 4500, 2250, 0);
 
-     // if(d2 > 1000*leftPointsZ) continue;
-     //if(d2 < 1000*rightPointsZ) continue;
-      
-      //PVector point2 = depthToPointCloudPos(x, (y+1), d2);
-      
-      
+      if(d2 > 1000*leftPointsZ) continue;
+     if(d2 < 1000*rightPointsZ) continue;
+
+      PVector point2 = depthToPointCloudPos(x, (y+1), d2);
+
+
       if(abs(d - d2) > 1) continue;
-      
+
       points.add(point1);
-      //points.add(point2);
-      //vertex(point1.x, point1.y, point1.z);
-      //vertex(point2.x, point2.y, point2.z);
+        if(pointCloudToMesh){
+           points.add(point2);
+        }
 
     }
-      //endShape();
   }
-  
+
   if(pointCloudToMesh){
        makeTriangleMesh();
+
+       r.show();
+  }else{
+   r.hide();
+
+  }
+  if (record) {
+    if(pointCloudToMesh){
+      if(radioButtonsVal == 2){
+      OBJExport obj = (OBJExport) createGraphics(10,10,"nervoussystem.obj.OBJExport","colored.obj");
+      obj.setColor(true);
+      obj.beginDraw();
+      
+      for(int i = 1; i < points.size()-1; i+=2){
+        testColorMesh(obj, i);
+      }
+
+      obj.endDraw();
+      obj.dispose();
+      record = false;
+      }else if(radioButtonsVal == 1){
+        meshTM.saveAsOBJ(sketchPath("mesh.obj"));
+       }
+    }else{
+
+    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj");
+    }
   }
  // pushMatrix();
-  if (record) {
-    beginRecord("nervoussystem.obj.OBJExport", "savedObject.obj"); 
-  }  
+
   beginShape(POINTS);
   strokeWeight(1);
-  
-  
-   stroke(#23B5A1);
+
+  stroke(#23B5A1);
   fill(#23B5A1, 150);
   for(int i = 0; i < oldPoints.size(); i++){
       PVector p = (PVector)oldPoints.get(i);
 
       vertex(p.x, p.y, p.z);
+
   }
+
   endShape();
   stroke(#FF3B42);
-  
+
   fill(#FF3B42, 150);
 
-  
+
   rotateX(rotObjX);
   rotateY(rotObjY);
   rotateZ(rotObjZ);
@@ -207,31 +244,43 @@ void draw() {
   translate(moveObjX, moveObjY, moveObjZ);
   if(pointCloudToMesh)
   {
-    shape(mesh);
+    oldPoints = new ArrayList<PVector>();
+    switch(radioButtonsVal){
+      case(1): gfx.mesh(meshTM); break;
+      case(2): gfx.mesh(meshTM); break;
+    }
+    //shape(mesh);
+     //gfx.mesh(meshTM);
+
   }else{
     beginShape(POINTS);
     for(int i = 0; i < points.size(); i++){
       PVector p = (PVector)points.get(i);
 
       vertex(p.x, p.y, p.z);
+
   }
- 
-    
    endShape();
   }
 
 
   if (record) {
+    if(pointCloudToMesh){
+
+    }else{
+
     endRecord();
     record = false;
+    }
   }
-  
+
  // popMatrix();
-  
+
   prevRawData = smoothData;
-     
+
    cameraToggle();
-   
+
    gui();
 
-}
+ }
+ 

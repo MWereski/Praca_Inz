@@ -387,7 +387,7 @@ void setButtons(){
      .setColorActive(#23B5A1) 
      .setLabel("Export Object")
      .setSize(130, 30)
-     .setPosition(60, 80)
+     .setPosition(4, 460)
      ;
      
   cp5.addButton("moveXm")
@@ -498,7 +498,7 @@ void setButtons(){
      .setColorActive(#23B5A1) 
      .setLabel("Add new Points")
      .setSize(150, 30)
-     .setPosition(4, 460)
+     .setPosition(60, 80)
      ;
 }
 
@@ -573,4 +573,21 @@ void setTextfields(){
      .setInputFilter(2)
      .setText(str(rotStep))
      .getCaptionLabel().hide();
+}
+
+void setRadioButtons(){
+  r = cp5.addRadioButton("radioButton")
+         .setPosition(4, 493)
+         .setSize(40,20)
+         .setColorActive(#67F9E5)
+         .setColorLabel(#67F9E5)
+         .setItemsPerRow(1)
+         .setSpacingColumn(50)
+         .addItem("Small Boxes",1)
+         .addItem("Mesh(RGB)",2)
+         .hide()
+         ;
+         
+      r.activate(0);
+      r.toUpperCase(false);
 }
