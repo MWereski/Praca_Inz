@@ -4,8 +4,8 @@ KinectPV2 kinect;
 PeasyCam cam;
 
 //depth img from kinect
-PImage img;
-
+PImage img, imgRGB;
+PImage aaa;
 //main mesh and single tris
 PShape mesh, t;
 
@@ -13,8 +13,10 @@ RadioButton r;
 
 int radioButtonsVal = 2;
 
+FloatBuffer colorBuffer;
+
 //max distance to draw triangle
-float maxDistance = 10;
+float maxDistance = 5;
 
 //reduce size of point cloud
 int cols, rows;
@@ -45,6 +47,7 @@ float rightPointsZ = 1.9f;
 int [] newRawData;
 int [] prevRawData; 
 int [] smoothData;
+int [] colors;
 
 int iterationsOfAvg = 4;
 

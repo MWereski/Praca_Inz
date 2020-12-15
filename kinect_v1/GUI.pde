@@ -584,7 +584,7 @@ void setRadioButtons(){
          .setItemsPerRow(1)
          .setSpacingColumn(50)
          .addItem("Small Boxes",1)
-         .addItem("Mesh",2)
+         .addItem("Mesh(RGB)",2)
          .hide()
          ;
          
